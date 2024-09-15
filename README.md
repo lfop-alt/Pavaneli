@@ -1,16 +1,34 @@
-# pavaneli_pedidos
+# Bem-vindo ao Projeto Pavaneli
 
-A new Flutter project.
+---
 
-## Getting Started
+Este projeto foi criado para **modernizar** uma pizzaria em **Diadema**, focando na **otimização** do processo de **gestão de pedidos**. A iniciativa elimina a necessidade de procedimentos **manuais**, introduzindo uma solução **automatizada** para a **impressão de pedidos**. Além de garantir maior **controle operacional** ao **proprietário**, o sistema aprimora a experiência dos **entregadores**, oferecendo um ambiente mais **seguro** para acompanhar as **tarifas** e organizar suas **rotas** de forma eficiente.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+### Tecnologias Usadas
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+| Tecnologia  | Descrição                                        |
+| ----------- | ------------------------------------------------ |
+| **Dart**    | Linguagem de programação usada no projeto.       |
+| **Flutter** | Framework utilizado para a criação da interface. |
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+### Status do Projeto
+
+- [x] **Tela de Cadastro de Cliente**
+- [x] **Tela do Cadastro de Itens**
+- [ ] **Dashboard Inicial** *(em progresso)*
+- [x] **Tela de Cadastro de Pedido**
+- [x] **Função de Impressão em Impressora Térmica**
+- [ ] **Tela dos Entregadores** *(em progresso)*
+
+---
+
+### Próximos Passos
+
+1. Finalizar a **Dashboard Inicial**.
+2. Desenvolver a **Tela dos Entregadores**.
+3. Realizar testes integrados para garantir a eficiência do fluxo automatizado.
+4. Implementar feedbacks do usuário final para aprimoramento contínuo.

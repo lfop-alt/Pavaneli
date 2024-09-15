@@ -54,16 +54,20 @@ class CardapioRepository {
     }
   }
 
-  Future<CardapioModel> buscarUmItem(String item) async {
+  Future buscarUmItem(String item) async {
     try {
       Database db = await _getDatabase();
 
       var response =
           await db.query(tableName, where: 'item = ?', whereArgs: [item]);
 
+      // if (response.first.isEmpty) {
+      //   return CardapioModel();
+      // }
+
       return CardapioModel.fromJson(response.first);
     } catch (error) {
-      throw Exception(error);
+      return null;
     }
   }
 }

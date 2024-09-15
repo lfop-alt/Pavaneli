@@ -38,8 +38,12 @@ class _AdicionarPedidoState extends State<AdicionarPedido> {
 
   double soma = 0;
   String calcularValoresTotaldoPedido() {
+    soma = 0;
     if (itemSelecionado.isEmpty) return "0";
     for (var item in itemSelecionado) {
+      if (item.valor == null) {
+        soma = 0;
+      }
       soma += item.valor!;
     }
     return soma.toStringAsFixed(2);
@@ -53,7 +57,7 @@ class _AdicionarPedidoState extends State<AdicionarPedido> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void adicionarCardapioDuplo(String primeiroItem, String segundoItem) async {
+  Future adicionarCardapioDuplo(String primeiroItem, String segundoItem) async {
     try {
       CardapioModel primeiroSabor =
           await _cardapioRepository.buscarUmItem(primeiroItem);
@@ -75,6 +79,7 @@ class _AdicionarPedidoState extends State<AdicionarPedido> {
               : segundoSabor.valor ?? 0,
         ),
       );
+
       showErrorSnackBar(context, "Item Cadastrado");
     } catch (error) {
       throw Exception(error);
@@ -310,12 +315,15 @@ class _AdicionarPedidoState extends State<AdicionarPedido> {
                           // CardapioModel segundoSabor = await _cardapioRepository
                           //     .buscarUmItem(segundoSaborController.text);
 
-                          adicionarCardapioDuplo(primeiroSaborController.text,
-                              segundoSaborController.text);
-
-                          CardapioModel itemDuplo =
-                              await _cardapioRepository.buscarUmItem(
-                                  "${primeiroSaborController.text}-${segundoSaborController.text}");
+                          var itemDuplo = await _cardapioRepository.buscarUmItem(
+                              "${primeiroSaborController.text}-${segundoSaborController.text}");
+                          if (itemDuplo == null) {
+                            await adicionarCardapioDuplo(
+                                primeiroSaborController.text,
+                                segundoSaborController.text);
+                          }
+                          itemDuplo = await _cardapioRepository.buscarUmItem(
+                              "${primeiroSaborController.text}-${segundoSaborController.text}");
 
                           itemSelecionado.add(itemDuplo);
 
@@ -351,7 +359,8 @@ class _AdicionarPedidoState extends State<AdicionarPedido> {
                                       child: Card(
                                         child: ListTile(
                                           title: Text(
-                                              itemSelecionado[index].item!),
+                                              itemSelecionado[index].item ??
+                                                  ""),
                                           subtitle: Text(itemSelecionado[index]
                                               .ingredientes!),
                                           trailing: Text(
@@ -360,7 +369,10 @@ class _AdicionarPedidoState extends State<AdicionarPedido> {
                                       ),
                                     ),
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          itemSelecionado.removeAt(index);
+                                          setState(() {});
+                                        },
                                         icon: const Icon(Icons.delete))
                                   ],
                                 ),
@@ -407,6 +419,7 @@ class _AdicionarPedidoState extends State<AdicionarPedido> {
                     for (var item in itemSelecionado) {
                       itens.add(PedidosCardapiosModel(
                           cardapioID: item.id, pedidoId: tamanhoDoPedidos + 1));
+                      print(item);
                     }
 
                     await _pedidoRepository.adicionar(

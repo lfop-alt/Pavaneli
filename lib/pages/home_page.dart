@@ -34,14 +34,25 @@ class _HomePageState extends State<HomePage> {
   }
 
   void buscarCardapio() async {
-    cardapio = await _cardapioRepository.buscarTodos();
+    var result = await _cardapioRepository.buscarTodos();
+
+    if (result.isEmpty) {
+      cardapio = [];
+    }
+
+    cardapio = result;
     setState(() {});
   }
 
   void buscarTodosOsPedidos() async {
-    var pedidoFinalDesordenado = await _pedidoRepository.buscarTodos();
-    pedidoFinalDesordenado.sort((a, b) => b.id!.compareTo(a.id!));
-    pedidoFinal = pedidoFinalDesordenado;
+    var result = await _pedidoRepository.buscarTodos();
+    if (result.isEmpty) {
+      pedidoFinal = [];
+    } else {
+      result = result;
+      result.sort((a, b) => b.id!.compareTo(a.id!));
+      pedidoFinal = result;
+    }
     setState(() {});
   }
 
@@ -52,7 +63,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // buscarCardapio();
+    buscarCardapio();
     // buscarTodosOsPedidos();
   }
 
@@ -74,6 +85,7 @@ class _HomePageState extends State<HomePage> {
             child: IconButton(
                 onPressed: () {
                   buscarCardapio();
+                  buscarTodosOsPedidos();
                 },
                 icon: const Icon(
                   Icons.refresh,
@@ -225,7 +237,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ],
-                    rows: pedidoFinal.map((pedido) {
+                    rows: pedidoFinal.take(5).map((pedido) {
                       List<String> itens = [];
                       for (var element in pedido.itens!) {
                         itens.add(element.item!);
