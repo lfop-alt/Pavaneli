@@ -44,11 +44,12 @@ class CardapioRepository {
     }
   }
 
-  Future<void> remove(int id) async {
+  Future<int> remove(int id) async {
     try {
       Database db = await _getDatabase();
 
       await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
+      return 1;
     } catch (error) {
       throw Exception();
     }

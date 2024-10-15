@@ -19,7 +19,7 @@ Este projeto foi criado para **modernizar** uma pizzaria em **Diadema**, focando
 
 - [x] **Tela de Cadastro de Cliente**
 - [x] **Tela do Cadastro de Itens**
-- [ ] **Dashboard Inicial** *(em progresso)*
+- [x] **Dashboard Inicial**
 - [x] **Tela de Cadastro de Pedido**
 - [x] **Função de Impressão em Impressora Térmica**
 - [ ] **Tela dos Entregadores** *(em progresso)*
@@ -28,7 +28,7 @@ Este projeto foi criado para **modernizar** uma pizzaria em **Diadema**, focando
 
 ### Próximos Passos
 
-1. Finalizar a **Dashboard Inicial**.
-2. Desenvolver a **Tela dos Entregadores**.
-3. Realizar testes integrados para garantir a eficiência do fluxo automatizado.
-4. Implementar feedbacks do usuário final para aprimoramento contínuo.
+
+1. Desenvolver a **Tela dos Entregadores**.
+2. Realizar testes integrados para garantir a eficiência do fluxo automatizado.
+3. Implementar feedbacks do usuário final para aprimoramento contínuo.

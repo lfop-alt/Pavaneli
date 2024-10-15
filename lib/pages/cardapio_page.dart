@@ -114,25 +114,46 @@ class _CardapioPageState extends State<CardapioPage> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: MaterialTheme.lightHighContrastScheme().secondary,
+        foregroundColor: Colors.white,
       ),
       body: ListView.builder(
         itemCount: cardapio.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text("${cardapio[index].item}"),
-                  subtitle: Text("${cardapio[index].ingredientes}"),
-                  trailing: Text(
-                    "R\$ ${cardapio[index].valor}",
-                    style: const TextStyle(fontSize: 20),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: Text("${cardapio[index].item}"),
+                        subtitle: Text("${cardapio[index].ingredientes}"),
+                        trailing: Text(
+                          "R\$ ${cardapio[index].valor}",
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        onTap: () {},
+                      ),
+                    ),
                   ),
-                  onTap: () {},
                 ),
-              ),
+                IconButton(
+                  onPressed: () async {
+                    int result =
+                        await _cardapioRepository.remove(cardapio[index].id!);
+
+                    if (result == 1) {
+                      const AlertDialog(
+                        content: Text("Item Excluido"),
+                      );
+                      buscarTodosItemNoCardapio();
+                    }
+                  },
+                  icon: const Icon(Icons.delete),
+                )
+              ],
             ),
           );
         },

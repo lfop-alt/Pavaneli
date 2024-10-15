@@ -73,8 +73,7 @@ class PedidoRepository {
 
       // Converta o mapa de pedidos para uma lista
       // List<Map<String, dynamic>> resultMap = pedidosMap.values.toList();
-      var todosPedidos = await db.rawQuery('SELECT * FROM pedidos_cardapios');
-      print(todosPedidos);
+
       return pedidosMap.values
           .map((element) => PedidoFinalModel.fromJson(element))
           .toList();
@@ -91,6 +90,36 @@ class PedidoRepository {
       // uso o throw para mandar o ero para o catch e pois buscar ele em outro lugar.
       return todosPedidos.length;
     } catch (error) {
+      throw Exception();
+    }
+  }
+
+  Future<PedidoFinalModel> buscarPedidoPorId(int idPedido) async {
+    try {
+      Database db = await _getDatabase();
+
+      var result =
+          await db.query(tableName, where: 'id = ?', whereArgs: [idPedido]);
+
+      var cliente = await db.query('clientes',
+          where: 'id = ?', whereArgs: [result.first['clienteId']]);
+
+      var itens = await db.rawQuery(
+          'SELECT cardapios.id, cardapios.item, cardapios.ingredientes FROM cardapios  INNER JOIN pedidos_cardapios ON cardapios.id = pedidos_cardapios.cardapioId AND pedidos_cardapios.pedidoId = $idPedido');
+
+      Map<String, dynamic> pedido = {};
+
+      pedido = {
+        'id': idPedido,
+        'cliente': cliente.first,
+        'itens': itens,
+        'valor': result.first['valor']
+      };
+
+      print(pedido);
+
+      return PedidoFinalModel.fromJson(pedido);
+    } catch (e) {
       throw Exception();
     }
   }

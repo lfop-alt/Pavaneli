@@ -123,6 +123,7 @@ class _ClientePageState extends State<ClientePage> {
       ),
       appBar: AppBar(
         backgroundColor: MaterialTheme.lightHighContrastScheme().secondary,
+        foregroundColor: Colors.white,
       ),
       body: isLoading == true
           ? const CircularProgressIndicator()

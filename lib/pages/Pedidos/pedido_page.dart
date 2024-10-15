@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pavaneli_pedidos/model/pedido_final_model.dart';
+import 'package:pavaneli_pedidos/repositories/pedido_repository.dart';
 
 import 'package:pavaneli_pedidos/theme.dart';
 
@@ -11,15 +13,26 @@ class PedidoPage extends StatefulWidget {
 
 class _PedidoPageState extends State<PedidoPage> {
   TextEditingController pedidoController = TextEditingController();
+  var pedido = PedidoFinalModel();
+  PedidoRepository pedidoRepository = PedidoRepository();
+
+  String mapearItens(List itens) {
+    List itensMapeados = [];
+    itens.map((item) => {
+          if (item != null) {itensMapeados.add(item)}
+        });
+
+    return itensMapeados.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MaterialTheme.lightHighContrastScheme().secondary,
-        foregroundColor: Colors.white,
-      ),
-      body: Column(
-        children: [
+        appBar: AppBar(
+          backgroundColor: MaterialTheme.lightHighContrastScheme().secondary,
+          foregroundColor: Colors.white,
+        ),
+        body: Column(children: [
           Expanded(
             flex: 2,
             child: Padding(
@@ -38,7 +51,18 @@ class _PedidoPageState extends State<PedidoPage> {
                       ),
                     ),
                   ),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+                  IconButton(
+                      onPressed: () async {
+                        // pedido = await pedidoRepository.buscarPedidoPorId(
+                        //     int.parse(pedidoController.text));
+
+                        // print('Obrigado');
+
+                        pedido = await pedidoRepository.buscarPedidoPorId(
+                            int.parse(pedidoController.text));
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.search))
                 ],
               ),
             ),
@@ -47,52 +71,19 @@ class _PedidoPageState extends State<PedidoPage> {
           //   endIndent: 40,
           //   indent: 40,
           // ),
-          pedidoController.text.isEmpty
+          pedido.id == null
               ? Container()
               : Expanded(
                   flex: 1,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView(
-                      children: const [
-                        Text(
-                          "2",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                        Divider(
-                          endIndent: 200,
-                          height: 20,
-                          indent: 200,
-                        ),
-                        Text(
-                          "Cliente",
-                          textAlign: TextAlign.center,
-                        ),
-                        Divider(
-                          endIndent: 200,
-                          height: 20,
-                          indent: 200,
-                        ),
-                        Text(
-                          "Pedidos",
-                          textAlign: TextAlign.center,
-                        ),
-                        Divider(
-                          endIndent: 200,
-                          height: 30,
-                          indent: 200,
-                        ),
-                        Text(
-                          "Valor",
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                  ))
-        ],
-      ),
-    );
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                          child: ListTile(
+                        title: Text("${pedido.cliente!.name}"),
+                        subtitle: Text(mapearItens(pedido.itens!)),
+                        trailing: Text("${pedido.valor}"),
+                      ))),
+                )
+        ]));
   }
 }

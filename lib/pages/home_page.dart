@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:pavaneli_pedidos/model/cardapio_model.dart';
 
 import 'package:pavaneli_pedidos/model/pedido_final_model.dart';
@@ -23,9 +24,9 @@ class _HomePageState extends State<HomePage> {
 
   List<CardapioModel> cardapio = [];
   List<PedidoFinalModel> pedidoFinal = [];
+  double soma = 0;
 
   double somarValores(List<PedidoFinalModel> itens) {
-    double soma = 0;
     for (var element in itens) {
       soma += element.valor!;
     }
@@ -60,11 +61,30 @@ class _HomePageState extends State<HomePage> {
     pedidoFinal.sort((a, b) => a.id!.compareTo(b.id!));
   }
 
+  void recarcularValorTotalDiario() {
+    DateTime now = DateTime.now();
+
+    // criando o time que quero que o evento seja executada
+    DateTime targetTime = DateTime(now.year, now.month, now.day, 23, 59);
+
+    if (now.isAfter(targetTime)) {
+      targetTime = targetTime.add(const Duration(days: 1));
+    }
+
+    Duration timeUntilTarget = targetTime.difference(now);
+
+    Timer(timeUntilTarget, () {
+      setState(() {
+        soma = 0;
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     buscarCardapio();
-    // buscarTodosOsPedidos();
+    buscarTodosOsPedidos();
   }
 
   @override
@@ -179,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                "Valores",
+                                "Valor Total",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
